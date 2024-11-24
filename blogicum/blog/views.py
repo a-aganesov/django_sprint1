@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.http import Http404
 
 # Create your views here.
 posts = [
@@ -51,10 +52,13 @@ def index(request):
     return render(request, template, context)
 
 
-def post_detail(request, id):
+def post_detail(request, post_id):
     template = "blog/detail.html"
-    context = {"post": posts[id]}
-    return render(request, template, context)
+    if 0 <= post_id <= 2:
+        context = {"post": posts[post_id]}
+        return render(request, template, context)
+    else:
+        raise Http404('Неверный номер поста: ', post_id)
 
 
 def category_posts(request, category_slug):
